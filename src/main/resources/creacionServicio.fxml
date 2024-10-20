@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="641.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="co.edu.uniquindio.clinica.controlador.InicioControlador">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.clinica.controlador.ServiciosControlador">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -20,9 +22,11 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Button onAction="#irRegistroPaciente" mnemonicParsing="false" prefHeight="26.0" prefWidth="309.0" text="Agregar Paciente" />
-            <Button onAction="#irAgregarServicio" mnemonicParsing="false" prefHeight="26.0" prefWidth="234.0" text="Agregar Servicio" />
+            <TextField fx:id="txtNombre" promptText="Nombre" style="-fx-prompt-text-fill: Black;" />
+            <TextField fx:id="txtPrecio" promptText="Precio" style="-fx-prompt-text-fill: Black;" />
+            <ComboBox fx:id="txtTipo" prefHeight="26.0" prefWidth="245.0" promptText="Tipo" />
          </children>
       </VBox>
+      <Button onAction="#agregarServicio" mnemonicParsing="false" text="Crear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
    </children>
 </GridPane>

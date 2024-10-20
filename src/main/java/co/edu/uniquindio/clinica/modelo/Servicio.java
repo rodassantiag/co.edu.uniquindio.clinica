@@ -8,6 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Servicio {
-    private String id, nombre, tipo;
+    private String id, nombre;
     private double precio;
+    private boolean esGratuitoBasica;
+    private boolean esGratuitoPremium;
+    private boolean tieneDescuentoBasica;
+
 }

@@ -17,7 +17,9 @@ public interface ServiciosClinica {
 
     ArrayList<Paciente> listarPacientes();
 
-    Servicio agregarServicio(String id, String nombre, double precio, String tipo) throws Exception;
+    ArrayList<Servicio> listarServicios();
+
+    Servicio agregarServicio(String nombre, double precio, boolean esGratuitoBasica, boolean esGratuitoPremium, boolean tieneDescuentoBasica) throws Exception;
 
     String generarid();
 

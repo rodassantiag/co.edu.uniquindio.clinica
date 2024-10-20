@@ -4,6 +4,7 @@ import co.edu.uniquindio.clinica.controlador.ControladorPrincipal;
 import co.edu.uniquindio.clinica.modelo.Factura;
 import co.edu.uniquindio.clinica.modelo.Servicio;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class SuscripcionPremium implements Suscripcion{
@@ -12,11 +13,25 @@ public class SuscripcionPremium implements Suscripcion{
 
     @Override
     public ArrayList<Servicio> getServicios() {
-        return controladorPrincipal.getClinica().getServiciosPremium();
+        return controladorPrincipal.getClinica().getServicios();
     }
 
     @Override
     public Factura generarFactura(Servicio servicio) {
-        return null;
+        double precioFinal;
+
+        if (servicio.isEsGratuitoPremium()) {
+            precioFinal = 0;
+        } else {
+            precioFinal = servicio.getPrecio(); // Precio completo si no es gratuito
+        }
+
+        return Factura.builder()
+                .fecha(LocalDateTime.now())
+                .id(controladorPrincipal.generarid())
+                .subtotal(servicio.getPrecio())
+                .total(precioFinal)
+                .build();
+
     }
 }

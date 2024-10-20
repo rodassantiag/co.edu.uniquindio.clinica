@@ -82,9 +82,15 @@ public class ControladorPrincipal implements ServiciosClinica {
     }
 
     @Override
-    public Servicio agregarServicio(String id, String nombre, double precio, String tipo) throws Exception {
-        return clinica.agregarServicio(id, nombre, precio, tipo) ;
+    public ArrayList<Servicio> listarServicios() {
+        return clinica.listarServicios();
     }
+
+    @Override
+    public Servicio agregarServicio(String nombre, double precio, boolean esGratuitoBasica, boolean esGratuitoPremium, boolean tieneDescuentoBasica) throws Exception {
+        return clinica.agregarServicio(nombre, precio, esGratuitoBasica, esGratuitoPremium, tieneDescuentoBasica);
+    }
+
 
     @Override
     public String generarid() {

@@ -16,21 +16,20 @@ import java.util.Random;
 public class Clinica implements ServiciosClinica {
 
     private ArrayList<Paciente> pacientes;
-    private ArrayList<Servicio> serviciosPremium;
-    private ArrayList<Servicio> serviciosBasica;
+    private ArrayList<Servicio> servicios;
     private ArrayList<Cita> citas;
 
     public Clinica(){
         this.pacientes = new ArrayList<>();
-        this.serviciosPremium = new ArrayList<>();
-        this.serviciosBasica = new ArrayList<>();
+        this.servicios= new ArrayList<>();
         this.citas = new ArrayList<>();
+
     }
 
     @Override
     public Suscripcion getSuscripcion(String suscripcion){
 
-        if (suscripcion.equals("Premium")){
+        if (suscripcion.equals("Premium")) {
             return new SuscripcionPremium();
         }
 
@@ -70,6 +69,7 @@ public class Clinica implements ServiciosClinica {
                 .email(email)
                 .suscripcion(suscripcion)
                 .build();
+
         pacientes.add(paciente);
         return paciente;
     }
@@ -80,7 +80,12 @@ public class Clinica implements ServiciosClinica {
     }
 
     @Override
-    public Servicio agregarServicio(String id, String nombre, double precio, String tipo) throws Exception{
+    public ArrayList<Servicio> listarServicios(){
+        return servicios;
+    }
+
+    @Override
+    public Servicio agregarServicio(String nombre, double precio, boolean esGratuitoBasica, boolean esGratuitoPremium, boolean tieneDescuentoBasica) throws Exception{
         if (nombre.isBlank()){
             throw new Exception("El nombre es obligatorio");
         }
@@ -89,22 +94,17 @@ public class Clinica implements ServiciosClinica {
             throw new Exception("El precio no puede ser negativo");
         }
 
-        if (tipo.isBlank()){
-            throw new Exception("El tipo es obligatorio");
-        }
 
         Servicio servicio = Servicio.builder()
                 .id(generarid())
                 .nombre(nombre)
                 .precio(precio)
-                .tipo(tipo)
+                .esGratuitoPremium(esGratuitoPremium)
+                .esGratuitoBasica(esGratuitoBasica)
+                .tieneDescuentoBasica(tieneDescuentoBasica)
                 .build();
 
-        if (servicio.getTipo().equals("Premium")){
-            serviciosPremium.add(servicio);
-        }else {
-            serviciosBasica.add(servicio);
-        }
+        servicios.add(servicio);
 
         return servicio;
     }

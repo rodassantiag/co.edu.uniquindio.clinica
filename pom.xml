@@ -21,7 +21,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>co.edu.uniquindio.bookYourStay.app.BookYourStayApp</mainClass>
+                    <mainClass>co.edu.uniquindio.clinica.app.ClinicaApp</mainClass>
                 </configuration>
             </plugin>
             <plugin>

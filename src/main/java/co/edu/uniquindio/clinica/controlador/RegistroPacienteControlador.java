@@ -14,9 +14,10 @@ import java.util.ResourceBundle;
 public class RegistroPacienteControlador implements Initializable {
 
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-
+    @FXML
     private TextField txtNombre, txtCedula, txtTelefono, txtEmail;
 
+    @FXML
     private ComboBox<String> txtSuscripcion;
     @FXML
     private TableColumn<Servicio, String> colNombre;
@@ -24,7 +25,6 @@ public class RegistroPacienteControlador implements Initializable {
     private TableColumn<Servicio, String> colPrecio;
     @FXML
     private TableView<Servicio> servicioTableView;
-
 
 
     public void agregarPaciente()throws Exception{
@@ -37,16 +37,15 @@ public class RegistroPacienteControlador implements Initializable {
             String suscripcionTexto = txtSuscripcion.getValue();
 
             Suscripcion suscripcion = controladorPrincipal.getSuscripcion(suscripcionTexto);
-            controladorPrincipal.registrarPaciente(nombre, cedula, telefono, email, suscripcion);
-            controladorPrincipal.crearAlerta("El Paciente ha sido registrado exitosamente", Alert.AlertType.INFORMATION);
 
-
-            servicioTableView.setItems(FXCollections.observableArrayList(suscripcion.getServicios()));
-
-            colNombre.setCellValueFactory(cellData -> new SimpleStringProperty( String.valueOf(cellData.getValue().getNombre())));
-            colPrecio.setCellValueFactory(cellData -> new SimpleStringProperty( String.valueOf(cellData.getValue().getPrecio())));
-
-            servicioTableView.setVisible(true);
+            Servicio servicioSeleccionado = servicioTableView.getSelectionModel().getSelectedItem();
+            if (servicioSeleccionado != null){
+                suscripcion.generarFactura(servicioSeleccionado);
+                controladorPrincipal.registrarPaciente(nombre, cedula, telefono, email, suscripcion);
+                controladorPrincipal.crearAlerta("El Paciente ha sido registrado exitosamente", Alert.AlertType.INFORMATION);
+            } else {
+                controladorPrincipal.crearAlerta("Elija un servicio", Alert.AlertType.ERROR);
+            }
 
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
@@ -54,8 +53,35 @@ public class RegistroPacienteControlador implements Initializable {
     }
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        servicioTableView.setVisible(false);
+        txtSuscripcion.setItems(FXCollections.observableArrayList("Premium", "Básica"));
+        txtSuscripcion.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                cargarServicios(newValue);
+            }
+        });
     }
+
+    private void cargarServicios(String suscripcionTexto) {
+        try {
+            Suscripcion suscripcion = controladorPrincipal.getSuscripcion(suscripcionTexto);
+
+            if (suscripcion != null) {
+                servicioTableView.setItems(FXCollections.observableArrayList(suscripcion.getServicios()));
+
+                colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
+                colPrecio.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrecio())));
+            } else {
+                controladorPrincipal.crearAlerta("La suscripción seleccionada no tiene servicios asociados.", Alert.AlertType.WARNING);
+                servicioTableView.setItems(FXCollections.emptyObservableList());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+
 }
