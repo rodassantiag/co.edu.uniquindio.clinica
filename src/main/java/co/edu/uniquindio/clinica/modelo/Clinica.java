@@ -4,6 +4,7 @@ import co.edu.uniquindio.clinica.factory.Suscripcion;
 import co.edu.uniquindio.clinica.factory.SuscripcionBasica;
 import co.edu.uniquindio.clinica.factory.SuscripcionPremium;
 import co.edu.uniquindio.clinica.servicio.ServiciosClinica;
+import co.edu.uniquindio.clinica.utils.EnvioEmail;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -110,6 +111,11 @@ public class Clinica implements ServiciosClinica {
     }
 
     @Override
+    public void eliminarServicio(Servicio servicio){
+        servicios.remove(servicio);
+    }
+
+    @Override
     public String generarid() {
         StringBuilder codigoRegistro = new StringBuilder();
 
@@ -141,8 +147,34 @@ public class Clinica implements ServiciosClinica {
         return cita;
     }
 
+    @Override
+    public void EnviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion) {
+        String correo = paciente.getEmail();
+        String nombrePaciente = paciente.getNombre();
+        LocalDateTime fecha = factura.getFecha();
+        String id = factura.getId();
+        double subTotal = factura.getSubtotal();
+        double total = factura.getTotal();
 
+        String asunto = "Factura de Suscripción - Clínica";
 
+        String mensaje = "Hola " + nombrePaciente + ",\n\n" +
+                "Gracias por usar nuestros servicios. Aquí están los detalles de su factura:\n\n" +
+                "Fecha de la factura: " + fecha + "\n" +
+                "ID de la factura: " + id + "\n" +
+                "Suscripción: " + tipoSuscripcion + "\n" +
+                "Servicio: " + nombreServicio + "\n" +
+                "Subtotal: $" + String.format("%.2f", subTotal) + "\n" +
+                "Total: $" + String.format("%.2f", total) + "\n\n" +
+                "Si tiene alguna pregunta, no dude en contactarnos.\n" +
+                "Atentamente,\n" +
+                "Clínica";
+
+        EnvioEmail envioEmail = new EnvioEmail(correo, asunto, mensaje);
+        envioEmail.enviarNotificacion();
+    }
 
 
 }
+
+

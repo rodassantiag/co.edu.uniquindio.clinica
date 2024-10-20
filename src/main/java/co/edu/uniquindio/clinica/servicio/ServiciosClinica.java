@@ -21,7 +21,11 @@ public interface ServiciosClinica {
 
     Servicio agregarServicio(String nombre, double precio, boolean esGratuitoBasica, boolean esGratuitoPremium, boolean tieneDescuentoBasica) throws Exception;
 
+    void eliminarServicio(Servicio servicio);
+
     String generarid();
 
     Cita agendarCita(Paciente paciente, Servicio servicio, Factura factura, LocalDateTime fecha) throws Exception;
+
+    void EnviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion);
 }

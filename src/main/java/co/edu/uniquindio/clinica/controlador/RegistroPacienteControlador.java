@@ -1,6 +1,8 @@
 package co.edu.uniquindio.clinica.controlador;
 
 import co.edu.uniquindio.clinica.factory.Suscripcion;
+import co.edu.uniquindio.clinica.modelo.Factura;
+import co.edu.uniquindio.clinica.modelo.Paciente;
 import co.edu.uniquindio.clinica.modelo.Servicio;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -40,8 +42,9 @@ public class RegistroPacienteControlador implements Initializable {
 
             Servicio servicioSeleccionado = servicioTableView.getSelectionModel().getSelectedItem();
             if (servicioSeleccionado != null){
-                suscripcion.generarFactura(servicioSeleccionado);
-                controladorPrincipal.registrarPaciente(nombre, cedula, telefono, email, suscripcion);
+                Factura factura = suscripcion.generarFactura(servicioSeleccionado);
+                Paciente paciente = controladorPrincipal.registrarPaciente(nombre, cedula, telefono, email, suscripcion);
+                controladorPrincipal.EnviarFacturaSuscripcion(paciente,factura, servicioSeleccionado.getNombre(), suscripcionTexto);
                 controladorPrincipal.crearAlerta("El Paciente ha sido registrado exitosamente", Alert.AlertType.INFORMATION);
             } else {
                 controladorPrincipal.crearAlerta("Elija un servicio", Alert.AlertType.ERROR);

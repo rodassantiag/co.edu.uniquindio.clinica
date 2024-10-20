@@ -91,6 +91,11 @@ public class ControladorPrincipal implements ServiciosClinica {
         return clinica.agregarServicio(nombre, precio, esGratuitoBasica, esGratuitoPremium, tieneDescuentoBasica);
     }
 
+    @Override
+    public void eliminarServicio(Servicio servicio) {
+        clinica.eliminarServicio(servicio);
+    }
+
 
     @Override
     public String generarid() {
@@ -100,5 +105,10 @@ public class ControladorPrincipal implements ServiciosClinica {
     @Override
     public Cita agendarCita(Paciente paciente, Servicio servicio, Factura factura, LocalDateTime fecha) throws Exception {
         return clinica.agendarCita(paciente, servicio, factura, fecha);
+    }
+
+    @Override
+    public void EnviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion) {
+        clinica.EnviarFacturaSuscripcion(paciente, factura, nombreServicio, tipoSuscripcion);
     }
 }
