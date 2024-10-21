@@ -10,4 +10,6 @@ public interface Suscripcion {
     ArrayList<Servicio> getServicios();
 
     Factura generarFactura(Servicio servicio);
+
+    ArrayList<Factura> getFacturas = new ArrayList<>();
 }

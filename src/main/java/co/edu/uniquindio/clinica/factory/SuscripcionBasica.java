@@ -3,13 +3,19 @@ package co.edu.uniquindio.clinica.factory;
 import co.edu.uniquindio.clinica.controlador.ControladorPrincipal;
 import co.edu.uniquindio.clinica.modelo.Factura;
 import co.edu.uniquindio.clinica.modelo.Servicio;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+
 public class SuscripcionBasica implements Suscripcion{
 
+
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
 
     @Override
     public ArrayList<Servicio> getServicios() {
@@ -34,7 +40,9 @@ public class SuscripcionBasica implements Suscripcion{
                 .subtotal(servicio.getPrecio())
                 .total(precioFinal)
                 .build();
+
     }
+
 
 
 }

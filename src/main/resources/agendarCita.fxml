@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="1016.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.clinica.controlador.CitaControlador">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.20001220703125" minWidth="10.0" prefWidth="31.000003814697266" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="373.5999900817871" minWidth="10.0" prefWidth="231.60003967285155" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.2000244140625" minWidth="6.399975585937568" prefWidth="41.19996032714846" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="675.2000244140625" minWidth="10.0" prefWidth="539.4000366210937" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.39993896484384" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="188.79998168945312" minHeight="10.0" prefHeight="97.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="263.60001373291016" minHeight="10.0" prefHeight="212.80001220703127" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="242.20000305175785" minHeight="10.0" prefHeight="97.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <VBox prefHeight="213.0" prefWidth="224.0" spacing="20.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <children>
+            <TextField fx:id="txtCedula" prefHeight="26.0" prefWidth="200.0" promptText="Cédula" style="-fx-prompt-text-fill: gray;" />
+            <DatePicker fx:id="txtFechaCita" prefHeight="26.0" prefWidth="226.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#agendarCita" prefHeight="26.0" prefWidth="67.0" text="Agendar" />
+                  <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#irInicio" prefHeight="26.0" prefWidth="52.0" text="Menú" />
+                  <Button onAction="#eliminarCita" mnemonicParsing="false" prefHeight="26.0" prefWidth="74.0" text="Eliminar" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TableView fx:id="tablaCitas" prefHeight="172.0" prefWidth="470.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+        <columns>
+          <TableColumn fx:id="colId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="colPaciente" prefWidth="75.0" text="Paciente" />
+            <TableColumn fx:id="colCedula" prefWidth="75.0" text="Cédula" />
+            <TableColumn fx:id="colServicio" prefWidth="75.0" text="Servicio" />
+            <TableColumn fx:id="colIdFactura" prefWidth="75.0" text="Id Factura" />
+            <TableColumn fx:id="colValor" prefWidth="75.0" text="Valor" />
+            <TableColumn fx:id="colFecha" prefWidth="102.4000305175781" text="Fecha" />
+        </columns>
+      </TableView>
+   </children>
+</GridPane>

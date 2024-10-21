@@ -1,11 +1,9 @@
 package co.edu.uniquindio.clinica.servicio;
 
 import co.edu.uniquindio.clinica.factory.Suscripcion;
-import co.edu.uniquindio.clinica.modelo.Cita;
-import co.edu.uniquindio.clinica.modelo.Factura;
-import co.edu.uniquindio.clinica.modelo.Paciente;
-import co.edu.uniquindio.clinica.modelo.Servicio;
+import co.edu.uniquindio.clinica.modelo.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -14,6 +12,8 @@ public interface ServiciosClinica {
 
     Paciente registrarPaciente(String nombre, String cedula, String telefono, String email,
                                Suscripcion suscripcion) throws Exception;
+
+    void guardarPacienteConFactura(Paciente paciente, Factura factura, Servicio servicio);
 
     void eliminarPaciente(Paciente paciente);
 
@@ -29,5 +29,13 @@ public interface ServiciosClinica {
 
     Cita agendarCita(Paciente paciente, Servicio servicio, Factura factura, LocalDateTime fecha) throws Exception;
 
-    void EnviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion);
+    PacienteConFactura obtenerPacienteConFactura(String cedula) throws Exception;
+
+    void enviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion);
+
+    void enviarFacturaCita(Cita cita);
+
+    void cancelarCita(Cita cita)throws Exception;
+
+    void correoCancelacion(Cita cita);
 }

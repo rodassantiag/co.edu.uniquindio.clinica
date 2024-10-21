@@ -26,4 +26,9 @@ public class InicioControlador {
         controladorPrincipal.navegarVentana("/pacientes.fxml", "Lista Pacientes");
         controladorPrincipal.cerrarVentana(boton);
     }
+
+    public void irAgendarCita() throws Exception{
+        controladorPrincipal.navegarVentana("/agendarCita.fxml", "Lista Pacientes");
+        controladorPrincipal.cerrarVentana(boton);
+    }
 }

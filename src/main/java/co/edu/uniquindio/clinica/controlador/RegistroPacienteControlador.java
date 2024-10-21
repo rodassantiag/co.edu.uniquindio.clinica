@@ -39,13 +39,12 @@ public class RegistroPacienteControlador implements Initializable {
             String suscripcionTexto = txtSuscripcion.getValue();
 
             if (suscripcionTexto == null){
-                controladorPrincipal.crearAlerta("Escoja un tipo de suscripcuón", Alert.AlertType.ERROR);
+                controladorPrincipal.crearAlerta("Escoja un tipo de suscripción", Alert.AlertType.ERROR);
+                return;
             }
 
-            if (suscripcionTexto != null){
-                if (servicioTableView == null){
-                    controladorPrincipal.crearAlerta("Aún no hay servicios creados", Alert.AlertType.ERROR);
-                }
+            if (servicioTableView == null) {
+                controladorPrincipal.crearAlerta("Aún no hay servicios creados", Alert.AlertType.ERROR);
             }
 
             Suscripcion suscripcion = controladorPrincipal.getSuscripcion(suscripcionTexto);
@@ -54,9 +53,11 @@ public class RegistroPacienteControlador implements Initializable {
             if (servicioSeleccionado != null){
                 Factura factura = suscripcion.generarFactura(servicioSeleccionado);
                 Paciente paciente = controladorPrincipal.registrarPaciente(nombre, cedula, telefono, email, suscripcion);
+                controladorPrincipal.guardarPacienteConFactura(paciente, factura, servicioSeleccionado);
                 controladorPrincipal.crearAlerta("El Paciente ha sido registrado exitosamente," +
                         " se ha enviado la factura al correo del mismo", Alert.AlertType.INFORMATION);
-                controladorPrincipal.EnviarFacturaSuscripcion(paciente,factura, servicioSeleccionado.getNombre(), suscripcionTexto);
+                limpiarCampos();
+                controladorPrincipal.enviarFacturaSuscripcion(paciente,factura, servicioSeleccionado.getNombre(), suscripcionTexto);
 
             } else {
                 controladorPrincipal.crearAlerta("Elija un servicio", Alert.AlertType.ERROR);
@@ -67,7 +68,12 @@ public class RegistroPacienteControlador implements Initializable {
         }
     }
 
-
+    public void limpiarCampos(){
+        txtNombre.clear();
+        txtCedula.clear();
+        txtTelefono.clear();
+        txtEmail.clear();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

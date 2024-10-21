@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -21,10 +22,12 @@ public class ControladorPrincipal implements ServiciosClinica {
 
     public static ControladorPrincipal INSTANCIA;
 
-    public ControladorPrincipal(){clinica = new Clinica();}
+    public ControladorPrincipal() {
+        clinica = new Clinica();
+    }
 
-    public static ControladorPrincipal getInstancia(){
-        if(INSTANCIA == null){
+    public static ControladorPrincipal getInstancia() {
+        if (INSTANCIA == null) {
             INSTANCIA = new ControladorPrincipal();
         }
         return INSTANCIA;
@@ -51,7 +54,7 @@ public class ControladorPrincipal implements ServiciosClinica {
         return loader;
     }
 
-    public void crearAlerta(String mensaje, Alert.AlertType tipo){
+    public void crearAlerta(String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle("Alerta");
         alert.setHeaderText(null);
@@ -74,6 +77,11 @@ public class ControladorPrincipal implements ServiciosClinica {
     @Override
     public Paciente registrarPaciente(String nombre, String cedula, String telefono, String email, Suscripcion suscripcion) throws Exception {
         return clinica.registrarPaciente(nombre, cedula, telefono, email, suscripcion);
+    }
+
+    @Override
+    public void guardarPacienteConFactura(Paciente paciente, Factura factura, Servicio servicio) {
+        clinica.guardarPacienteConFactura(paciente, factura, servicio);
     }
 
     @Override
@@ -113,7 +121,30 @@ public class ControladorPrincipal implements ServiciosClinica {
     }
 
     @Override
-    public void EnviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion) {
-        clinica.EnviarFacturaSuscripcion(paciente, factura, nombreServicio, tipoSuscripcion);
+    public PacienteConFactura obtenerPacienteConFactura(String cedula) throws Exception {
+        return clinica.obtenerPacienteConFactura(cedula);
     }
+
+
+    @Override
+    public void enviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion) {
+        clinica.enviarFacturaSuscripcion(paciente, factura, nombreServicio, tipoSuscripcion);
+    }
+
+    @Override
+    public void enviarFacturaCita(Cita cita) {
+        clinica.enviarFacturaCita(cita);
+    }
+
+    @Override
+    public void cancelarCita(Cita cita) throws Exception {
+        clinica.cancelarCita(cita);
+    }
+
+    @Override
+    public void correoCancelacion(Cita cita) {
+        clinica.correoCancelacion(cita);
+    }
+
+
 }

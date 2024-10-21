@@ -8,9 +8,11 @@ import co.edu.uniquindio.clinica.utils.EnvioEmail;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
+
 
 @Setter
 @Getter
@@ -19,11 +21,13 @@ public class Clinica implements ServiciosClinica {
     private ArrayList<Paciente> pacientes;
     private ArrayList<Servicio> servicios;
     private ArrayList<Cita> citas;
+    private ArrayList<PacienteConFactura> pacienteConFacturas;
 
     public Clinica() {
         this.pacientes = new ArrayList<>();
         this.servicios = new ArrayList<>();
         this.citas = new ArrayList<>();
+        this.pacienteConFacturas = new ArrayList<>();
 
     }
 
@@ -58,8 +62,20 @@ public class Clinica implements ServiciosClinica {
             throw new Exception("La cédula no es válida");
         }
 
+        if (obtenerPaciente(cedula) != null){
+            throw new Exception("Ya existe un paciente registrado con la misma cédula");
+        }
+
+        if (obtenerPacienteCorreo(email) != null){
+            throw new Exception("Ya existe un paciente registrado con el mismo correo");
+        }
+
+        if (obtenerPacienteTelefono(telefono) != null){
+            throw new Exception("Ya existe un paciente registrado con el mismo teléfono");
+        }
+
         if (telefono.isBlank()) {
-            throw new Exception("El telefono es Obligatorio");
+            throw new Exception("El teléfono es Obligatorio");
         }
 
         if (!telefono.matches("\\d+")) {
@@ -75,7 +91,6 @@ public class Clinica implements ServiciosClinica {
             throw new Exception("El formato del email es inválido");
         }
 
-
         Paciente paciente = Paciente.builder()
                 .nombre(nombre)
                 .cedula(cedula)
@@ -86,6 +101,42 @@ public class Clinica implements ServiciosClinica {
 
         pacientes.add(paciente);
         return paciente;
+    }
+
+    public Paciente obtenerPaciente(String cedula){
+        for (Paciente paciente : pacientes){
+            if (paciente.getCedula().equals(cedula)){
+                return paciente;
+            }
+        }
+        return null;
+    }
+
+    public Paciente obtenerPacienteCorreo(String correo){
+        for (Paciente paciente : pacientes){
+            if (paciente.getEmail().equals(correo)){
+                return paciente;
+            }
+        }
+        return null;
+    }
+
+    public Paciente obtenerPacienteTelefono(String telefono){
+        for (Paciente paciente : pacientes){
+            if (paciente.getTelefono().equals(telefono)){
+                return paciente;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void guardarPacienteConFactura(Paciente paciente, Factura factura, Servicio servicio) {
+        pacienteConFacturas.add(PacienteConFactura.builder()
+                .paciente(paciente)
+                .factura(factura)
+                .servicio(servicio)
+                .build());
     }
 
     @Override
@@ -148,6 +199,11 @@ public class Clinica implements ServiciosClinica {
 
     @Override
     public Cita agendarCita(Paciente paciente, Servicio servicio, Factura factura, LocalDateTime fecha) throws Exception {
+
+        if (fecha.isBefore(LocalDateTime.now())){
+            throw new Exception("La fecha no puede ser menor a la fecha actual");
+        }
+
         for (Cita citaExistente : citas) {
             if (citaExistente.getFecha().equals(fecha)) {
                 throw new Exception("Ya existe una cita programada para esta fecha y hora.");
@@ -155,6 +211,7 @@ public class Clinica implements ServiciosClinica {
         }
 
         Cita cita = Cita.builder()
+                .id(generarid())
                 .paciente(paciente)
                 .servicio(servicio)
                 .factura(factura)
@@ -164,8 +221,22 @@ public class Clinica implements ServiciosClinica {
         return cita;
     }
 
+
+
+
     @Override
-    public void EnviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion) {
+    public PacienteConFactura obtenerPacienteConFactura(String cedula) throws Exception {
+        for (PacienteConFactura pacienteConFactura : pacienteConFacturas){
+            if (pacienteConFactura.getPaciente().getCedula().equals(cedula)){
+                return pacienteConFactura;
+            }
+        }
+
+        throw new Exception("No se ha encontrado ningún paciente con la cédula proporcionada");
+    }
+
+    @Override
+    public void enviarFacturaSuscripcion(Paciente paciente, Factura factura, String nombreServicio, String tipoSuscripcion) {
         String correo = paciente.getEmail();
         String nombrePaciente = paciente.getNombre();
         LocalDateTime fecha = factura.getFecha();
@@ -190,6 +261,82 @@ public class Clinica implements ServiciosClinica {
         EnvioEmail envioEmail = new EnvioEmail(correo, asunto, mensaje);
         envioEmail.enviarNotificacion();
     }
+
+    @Override
+    public void enviarFacturaCita(Cita cita) {
+        String correo = cita.getPaciente().getEmail();
+        String nombrePaciente = cita.getPaciente().getNombre();
+        LocalDateTime fecha = cita.getFecha();
+        String id = cita.getId();
+        String nombreServicio = cita.getServicio().getNombre();
+        double subTotal = cita.getFactura().getSubtotal();
+        double total = cita.getFactura().getTotal();
+
+        String asunto = "Factura de Suscripción - Clínica";
+
+        String mensaje = "Hola " + nombrePaciente + ",\n\n" +
+                "Gracias por usar nuestros servicios. Aquí están los detalles de su cita:\n\n" +
+                "Fecha de la cita: " + fecha + "\n" +
+                "ID de la cita: " + id + "\n" +
+                "Servicio: " + nombreServicio + "\n" +
+                "Subtotal: $" + String.format("%.2f", subTotal) + "\n" +
+                "Total: $" + String.format("%.2f", total) + "\n\n" +
+                "Si tiene alguna pregunta, no dude en contactarnos.\n" +
+                "Atentamente,\n" +
+                "Clínica";
+
+        EnvioEmail envioEmail = new EnvioEmail(correo, asunto, mensaje);
+        envioEmail.enviarNotificacion();
+    }
+
+    @Override
+    public void cancelarCita(Cita cita){
+        citas.remove(cita);
+    }
+
+    @Override
+    public void correoCancelacion(Cita cita){
+        String correo = cita.getPaciente().getEmail();
+        String nombrePaciente = cita.getPaciente().getNombre();
+        LocalDateTime fecha = cita.getFecha();
+        String id = cita.getId();
+        String nombreServicio = cita.getServicio().getNombre();
+        double subTotal = cita.getFactura().getSubtotal();
+        double total = cita.getFactura().getTotal();
+
+        String asunto = "Cancelación de Cita - Clínica";
+
+        String mensaje = "Hola " + nombrePaciente + ",\n\n" +
+                "Se le informa que su cita programada para la fecha:" +fecha +" ha sido cancelada.\n\n" +
+                "ID de la cita: " + id + "\n" +
+                "Servicio: " + nombreServicio + "\n" +
+                "Subtotal: $" + String.format("%.2f", subTotal) + "\n" +
+                "Total: $" + String.format("%.2f", total) + "\n\n" +
+                "Para más información, no dude en contactarnos.\n" +
+                "Atentamente,\n" +
+                "Clínica";
+
+        EnvioEmail envioEmail = new EnvioEmail(correo, asunto, mensaje);
+        envioEmail.enviarNotificacion();
+
+    }
+
+
+    public LocalDateTime generarFechaHoraRandom(LocalDate fecha) {
+        int horaMinima = 6;
+        int horaMaxima = 20;
+
+        Random random = new Random();
+
+
+        int horaAleatoria = random.nextInt(horaMaxima - horaMinima + 1) + horaMinima;
+
+        int minutoAleatorio = random.nextInt(60);
+
+
+        return fecha.atTime(horaAleatoria, minutoAleatorio);
+    }
+
 
 
 }

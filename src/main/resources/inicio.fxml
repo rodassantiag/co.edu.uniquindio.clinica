@@ -21,8 +21,9 @@
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Button fx:id="boton" mnemonicParsing="false" onAction="#irRegistroPaciente" prefHeight="26.0" prefWidth="309.0" text="Agregar Paciente" />
-            <Button onAction="#irListaPacientes" mnemonicParsing="false" prefHeight="26.0" prefWidth="231.0" text="Lista Pacientes" />
+            <Button mnemonicParsing="false" onAction="#irListaPacientes" prefHeight="26.0" prefWidth="231.0" text="Lista Pacientes" />
             <Button mnemonicParsing="false" onAction="#irAgregarServicio" prefHeight="26.0" prefWidth="234.0" text="Agregar Servicio" />
+            <Button mnemonicParsing="false" onAction="#irAgendarCita" prefHeight="26.0" prefWidth="234.0" text="Agendar Cita" />
          </children>
       </VBox>
    </children>

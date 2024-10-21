@@ -39,16 +39,15 @@ public class ServiciosControlador implements Initializable {
             boolean tieneDescuentoBasica = chkDescuentoBasica.isSelected();
 
             if (!precioTexto.matches("\\d+")) {
-                throw new Exception("El número de teléfono es inválido");
+                throw new Exception("Precio inválido");
             }
 
             double precio = Double.parseDouble(txtPrecio.getText());
 
             controladorPrincipal.agregarServicio(nombre, precio, esGratuitoBasica, esGratuitoPremium, tieneDescuentoBasica);
             tablaServicios.setItems(FXCollections.observableArrayList(controladorPrincipal.getClinica().getServicios()));
-
-
             controladorPrincipal.crearAlerta("El servicio se ha agregado Correctamente", Alert.AlertType.INFORMATION);
+            limpiarCampos();
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -60,7 +59,7 @@ public class ServiciosControlador implements Initializable {
 
             if (servicioSeleccionado != null){
                 controladorPrincipal.eliminarServicio(servicioSeleccionado);
-                tablaServicios.setItems(FXCollections.observableArrayList(controladorPrincipal.getClinica().getServicios()));
+                tablaServicios.setItems(FXCollections.observableArrayList(controladorPrincipal.listarServicios()));
                 controladorPrincipal.crearAlerta("El servicio se ha eliminado exitosamente", Alert.AlertType.INFORMATION);
             }else {
                 controladorPrincipal.crearAlerta("Elija un servicio", Alert.AlertType.ERROR);
@@ -71,6 +70,14 @@ public class ServiciosControlador implements Initializable {
         }
     }
 
+    public void limpiarCampos(){
+        txtNombre.clear();
+        txtPrecio.clear();
+        chkDescuentoBasica.setSelected(false);
+        chkGratuitoBasica.setSelected(false);
+        chkGratuitoPremium.setSelected(false);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cargarServicios();
@@ -79,7 +86,7 @@ public class ServiciosControlador implements Initializable {
 
     private void cargarServicios() {
 
-        tablaServicios.setItems(FXCollections.observableArrayList(controladorPrincipal.getClinica().getServicios()));
+        tablaServicios.setItems(FXCollections.observableArrayList(controladorPrincipal.listarServicios()));
 
         colId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId()));
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
