@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -24,19 +25,40 @@ public class ListaPacientesControlador implements Initializable {
     @FXML
     private TableColumn<Paciente, String> colCorreo;
     @FXML
-    private TableColumn<Paciente, String> colSuscripcion;
-    @FXML
     private TableView<Paciente> tablaPacientes;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cargarPacientes();
+    }
+
+    public void cargarPacientes(){
 
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
         colCedula.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCedula()));
         colTelefono.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTelefono()));
         colCorreo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
-        colSuscripcion.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSuscripcion().toString()));
-        tablaPacientes.setItems(FXCollections.observableArrayList(controladorPrincipal.getClinica().getPacientes()));
+        tablaPacientes.setItems(FXCollections.observableArrayList(controladorPrincipal.listarPacientes()));
+    }
 
+    public void irInicio() throws Exception{
+        controladorPrincipal.navegarVentana("/inicio.fxml", "Inicio");
+        controladorPrincipal.cerrarVentana(tablaPacientes);
+    }
+
+    public void eliminarPaciente(){
+        try {
+            Paciente paciente = tablaPacientes.getSelectionModel().getSelectedItem();
+            if (paciente != null){
+                controladorPrincipal.eliminarPaciente(paciente);
+                tablaPacientes.setItems(FXCollections.observableArrayList(controladorPrincipal.listarPacientes()));
+                controladorPrincipal.crearAlerta("El paciente ha sido eliminado exitosamente", Alert.AlertType.INFORMATION);
+
+            }else {
+                controladorPrincipal.crearAlerta("Elija un paciente", Alert.AlertType.ERROR);
+            }
+        } catch (Exception e) {
+            controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 }

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="641.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="co.edu.uniquindio.clinica.controlador.InicioControlador">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.clinica.controlador.InicioControlador">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -20,8 +20,9 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Button onAction="#irRegistroPaciente" mnemonicParsing="false" prefHeight="26.0" prefWidth="309.0" text="Agregar Paciente" />
-            <Button onAction="#irAgregarServicio" mnemonicParsing="false" prefHeight="26.0" prefWidth="234.0" text="Agregar Servicio" />
+            <Button fx:id="boton" mnemonicParsing="false" onAction="#irRegistroPaciente" prefHeight="26.0" prefWidth="309.0" text="Agregar Paciente" />
+            <Button onAction="#irListaPacientes" mnemonicParsing="false" prefHeight="26.0" prefWidth="231.0" text="Lista Pacientes" />
+            <Button mnemonicParsing="false" onAction="#irAgregarServicio" prefHeight="26.0" prefWidth="234.0" text="Agregar Servicio" />
          </children>
       </VBox>
    </children>

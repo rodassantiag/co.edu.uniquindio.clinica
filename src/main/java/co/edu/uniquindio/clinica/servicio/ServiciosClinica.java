@@ -15,6 +15,8 @@ public interface ServiciosClinica {
     Paciente registrarPaciente(String nombre, String cedula, String telefono, String email,
                                Suscripcion suscripcion) throws Exception;
 
+    void eliminarPaciente(Paciente paciente);
+
     ArrayList<Paciente> listarPacientes();
 
     ArrayList<Servicio> listarServicios();

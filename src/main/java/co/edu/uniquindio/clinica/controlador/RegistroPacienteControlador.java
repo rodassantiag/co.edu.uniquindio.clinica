@@ -38,14 +38,26 @@ public class RegistroPacienteControlador implements Initializable {
             String email = txtEmail.getText();
             String suscripcionTexto = txtSuscripcion.getValue();
 
+            if (suscripcionTexto == null){
+                controladorPrincipal.crearAlerta("Escoja un tipo de suscripcuón", Alert.AlertType.ERROR);
+            }
+
+            if (suscripcionTexto != null){
+                if (servicioTableView == null){
+                    controladorPrincipal.crearAlerta("Aún no hay servicios creados", Alert.AlertType.ERROR);
+                }
+            }
+
             Suscripcion suscripcion = controladorPrincipal.getSuscripcion(suscripcionTexto);
 
             Servicio servicioSeleccionado = servicioTableView.getSelectionModel().getSelectedItem();
             if (servicioSeleccionado != null){
                 Factura factura = suscripcion.generarFactura(servicioSeleccionado);
                 Paciente paciente = controladorPrincipal.registrarPaciente(nombre, cedula, telefono, email, suscripcion);
+                controladorPrincipal.crearAlerta("El Paciente ha sido registrado exitosamente," +
+                        " se ha enviado la factura al correo del mismo", Alert.AlertType.INFORMATION);
                 controladorPrincipal.EnviarFacturaSuscripcion(paciente,factura, servicioSeleccionado.getNombre(), suscripcionTexto);
-                controladorPrincipal.crearAlerta("El Paciente ha sido registrado exitosamente", Alert.AlertType.INFORMATION);
+
             } else {
                 controladorPrincipal.crearAlerta("Elija un servicio", Alert.AlertType.ERROR);
             }
@@ -72,18 +84,33 @@ public class RegistroPacienteControlador implements Initializable {
             Suscripcion suscripcion = controladorPrincipal.getSuscripcion(suscripcionTexto);
 
             if (suscripcion != null) {
-                servicioTableView.setItems(FXCollections.observableArrayList(suscripcion.getServicios()));
 
-                colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
-                colPrecio.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrecio())));
+
+                var listaServicios = FXCollections.observableArrayList(suscripcion.getServicios());
+
+
+                if (listaServicios.isEmpty()) {
+                    controladorPrincipal.crearAlerta("No hay servicios creados para esta suscripción. Por favor, cree los servicios para continuar.", Alert.AlertType.WARNING);
+                } else {
+
+                    servicioTableView.setItems(listaServicios);
+                    colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
+                    colPrecio.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrecio())));
+                }
             } else {
                 controladorPrincipal.crearAlerta("La suscripción seleccionada no tiene servicios asociados.", Alert.AlertType.WARNING);
-                servicioTableView.setItems(FXCollections.emptyObservableList());
+                servicioTableView.setItems(null);  // Limpiar la tabla si no hay servicios
             }
         } catch (Exception e) {
             e.printStackTrace();
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+
+    public void irInicio() throws Exception{
+        controladorPrincipal.navegarVentana("/inicio.fxml", "Inicio");
+        controladorPrincipal.cerrarVentana(servicioTableView);
     }
 
 

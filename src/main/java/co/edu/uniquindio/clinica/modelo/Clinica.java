@@ -20,46 +20,59 @@ public class Clinica implements ServiciosClinica {
     private ArrayList<Servicio> servicios;
     private ArrayList<Cita> citas;
 
-    public Clinica(){
+    public Clinica() {
         this.pacientes = new ArrayList<>();
-        this.servicios= new ArrayList<>();
+        this.servicios = new ArrayList<>();
         this.citas = new ArrayList<>();
 
     }
 
     @Override
-    public Suscripcion getSuscripcion(String suscripcion){
+    public Suscripcion getSuscripcion(String suscripcion) {
 
         if (suscripcion.equals("Premium")) {
             return new SuscripcionPremium();
         }
 
-        if (suscripcion.equals("Básica")){
+        if (suscripcion.equals("Básica")) {
             return new SuscripcionBasica();
 
-        }else {
+        } else {
             return null;
         }
     }
 
     @Override
     public Paciente registrarPaciente(String nombre, String cedula, String telefono, String email,
-                                      Suscripcion suscripcion) throws Exception{
+                                      Suscripcion suscripcion) throws Exception {
 
-        if (nombre.isBlank()){
+        if (nombre.isBlank()) {
             throw new Exception("El nombre es Obligatorio");
         }
 
-        if (cedula.isBlank()){
+        if (cedula.isBlank()) {
             throw new Exception("La cedula es Obligatoria");
         }
 
-        if (telefono.isBlank()){
+        if (!cedula.matches("\\d+")) {
+            throw new Exception("La cédula no es válida");
+        }
+
+        if (telefono.isBlank()) {
             throw new Exception("El telefono es Obligatorio");
         }
 
-        if (email.isBlank()){
+        if (!telefono.matches("\\d+")) {
+            throw new Exception("El número de teléfono es inválido");
+        }
+
+        if (email.isBlank()) {
             throw new Exception("El email es Obligatorio");
+        }
+
+        String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if (!email.matches(emailRegex)) {
+            throw new Exception("El formato del email es inválido");
         }
 
 
@@ -73,6 +86,11 @@ public class Clinica implements ServiciosClinica {
 
         pacientes.add(paciente);
         return paciente;
+    }
+
+    @Override
+    public void eliminarPaciente(Paciente paciente){
+        pacientes.remove(paciente);
     }
 
     @Override
@@ -94,7 +112,6 @@ public class Clinica implements ServiciosClinica {
         if (precio < 0){
             throw new Exception("El precio no puede ser negativo");
         }
-
 
         Servicio servicio = Servicio.builder()
                 .id(generarid())

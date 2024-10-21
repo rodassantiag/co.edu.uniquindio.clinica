@@ -77,6 +77,11 @@ public class ControladorPrincipal implements ServiciosClinica {
     }
 
     @Override
+    public void eliminarPaciente(Paciente paciente) {
+        clinica.eliminarPaciente(paciente);
+    }
+
+    @Override
     public ArrayList<Paciente> listarPacientes() {
         return clinica.listarPacientes();
     }

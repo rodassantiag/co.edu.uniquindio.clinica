@@ -33,11 +33,16 @@ public class ServiciosControlador implements Initializable {
     public void agregarServicio() throws Exception{
         try {
             String nombre = txtNombre.getText();
-            double precio = Double.parseDouble(txtPrecio.getText());
+            String precioTexto = txtPrecio.getText();
             boolean esGratuitoBasica = chkGratuitoBasica.isSelected();
             boolean esGratuitoPremium = chkGratuitoPremium.isSelected();
             boolean tieneDescuentoBasica = chkDescuentoBasica.isSelected();
 
+            if (!precioTexto.matches("\\d+")) {
+                throw new Exception("El número de teléfono es inválido");
+            }
+
+            double precio = Double.parseDouble(txtPrecio.getText());
 
             controladorPrincipal.agregarServicio(nombre, precio, esGratuitoBasica, esGratuitoPremium, tieneDescuentoBasica);
             tablaServicios.setItems(FXCollections.observableArrayList(controladorPrincipal.getClinica().getServicios()));
@@ -82,5 +87,10 @@ public class ServiciosControlador implements Initializable {
         colGratuitoBasica.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isEsGratuitoBasica() ? "Sí" : "No"));
         colDescuentoBasica.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isTieneDescuentoBasica() ? "Sí" : "No"));
         colGratuitoPremium.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isEsGratuitoPremium() ? "Sí" : "No"));
+    }
+
+    public void irInicio() throws Exception{
+        controladorPrincipal.navegarVentana("/inicio.fxml", "Inicio");
+        controladorPrincipal.cerrarVentana(tablaServicios);
     }
 }

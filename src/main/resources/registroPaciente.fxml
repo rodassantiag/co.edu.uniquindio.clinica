@@ -8,24 +8,25 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="715.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.clinica.controlador.RegistroPacienteControlador">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="341.0" prefWidth="698.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.clinica.controlador.RegistroPacienteControlador">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="460.20001220703125" minWidth="10.0" prefWidth="74.39996337890625" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="460.20001220703125" minWidth="10.0" prefWidth="269.60003662109375" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.9999694824219" minWidth="10.0" prefWidth="140.2" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.9999694824219" minWidth="10.0" prefWidth="258.60007324218753" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.9999694824219" minWidth="10.0" prefWidth="71.39992675781252" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="91.80002441406248" minHeight="10.0" prefHeight="90.20001831054685" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="240.19998779296873" minHeight="10.0" prefHeight="227.99998168945308" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="130.60001220703123" minHeight="10.0" prefHeight="39.39999999999998" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="234.99999084472657" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="266.8" minHeight="10.0" prefHeight="37.59997978210449" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="266.8" minHeight="10.0" prefHeight="37.59997978210449" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="546.200030517578" minHeight="10.0" prefHeight="287.1999633789063" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="546.200030517578" minHeight="10.0" prefHeight="42.400036621093705" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -35,24 +36,24 @@
             <TextField fx:id="txtTelefono" promptText="Teléfono" style="-fx-prompt-text-fill: black;" />
             <TextField fx:id="txtEmail" promptText="Correo" style="-fx-prompt-text-fill: black;" />
             <ComboBox fx:id="txtSuscripcion" prefHeight="26.0" prefWidth="242.0" promptText="Suscripción" />
-            <Label text="Servicios:">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#irInicio" prefHeight="43.0" prefWidth="76.0" text="Menú" />
+                  <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#agregarPaciente" prefHeight="43.0" prefWidth="76.0" text="Crear" />
+               </children>
+            </HBox>
          </children>
       </VBox>
-      <TableView fx:id="servicioTableView" prefHeight="241.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <TableView fx:id="servicioTableView" prefHeight="270.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
         <columns>
           <TableColumn fx:id="colNombre" prefWidth="116.5" text="Nombre" />
           <TableColumn fx:id="colPrecio" prefWidth="116.5" text="Precio" />
         </columns>
       </TableView>
-      <Label text="Registro Pacientes" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+      <Label text="Servicios:" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <font>
-            <Font name="System Bold" size="25.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button onAction="#agregarPaciente" mnemonicParsing="false" prefHeight="43.0" prefWidth="76.0" text="Crear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
    </children>
 </GridPane>
