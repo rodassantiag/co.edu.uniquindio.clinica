@@ -145,6 +145,11 @@ public class Clinica implements ServiciosClinica {
     }
 
     @Override
+    public void eliminarPacienteFactura(Paciente paciente){
+        pacienteConFacturas.removeIf(pacienteConFactura -> pacienteConFactura.getPaciente().equals(paciente));
+    }
+
+    @Override
     public ArrayList<Paciente> listarPacientes(){
         return pacientes;
     }

@@ -17,6 +17,8 @@ public interface ServiciosClinica {
 
     void eliminarPaciente(Paciente paciente);
 
+    void eliminarPacienteFactura(Paciente paciente);
+
     ArrayList<Paciente> listarPacientes();
 
     ArrayList<Servicio> listarServicios();

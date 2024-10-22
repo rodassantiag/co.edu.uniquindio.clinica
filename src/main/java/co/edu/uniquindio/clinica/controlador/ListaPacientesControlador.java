@@ -51,6 +51,7 @@ public class ListaPacientesControlador implements Initializable {
             Paciente paciente = tablaPacientes.getSelectionModel().getSelectedItem();
             if (paciente != null){
                 controladorPrincipal.eliminarPaciente(paciente);
+                controladorPrincipal.eliminarPacienteFactura(paciente);
                 tablaPacientes.setItems(FXCollections.observableArrayList(controladorPrincipal.listarPacientes()));
                 controladorPrincipal.crearAlerta("El paciente ha sido eliminado exitosamente", Alert.AlertType.INFORMATION);
 

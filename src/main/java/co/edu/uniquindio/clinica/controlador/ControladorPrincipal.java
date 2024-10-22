@@ -90,6 +90,11 @@ public class ControladorPrincipal implements ServiciosClinica {
     }
 
     @Override
+    public void eliminarPacienteFactura(Paciente paciente) {
+        clinica.eliminarPacienteFactura(paciente);
+    }
+
+    @Override
     public ArrayList<Paciente> listarPacientes() {
         return clinica.listarPacientes();
     }
